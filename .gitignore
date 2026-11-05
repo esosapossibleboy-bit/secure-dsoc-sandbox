@@ -1,0 +1,9 @@
+# secure-dsoc-sandbox/.gitignore
+node_modules/
+auth-audit-service/node_modules/
+vault-data-service/node_modules/
+.env
+auth-audit-service/.env
+vault-data-service/.env
+.vscode/
+npm-debug.log*

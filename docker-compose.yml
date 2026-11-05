@@ -1,0 +1,37 @@
+# docker-compose.yml
+version: '3.8'
+
+# 🌐 NETWORKS MATRIX: Creates an isolated, cryptographically secure virtual private switchboard cloud
+networks:
+  dsoc-secure-mesh:
+    driver: bridge
+
+services:
+  # 🔐 SERVICE 1: The Audited Authentication & Intrusion Detection Core Node
+  auth-audit-node:
+    build: ./auth-audit-service
+    container_name: dsoc-auth-audit-node
+    ports:
+      - "3040:3040"
+    environment:
+      - PORT=3040
+      - NODE_ENV=production
+      - JWT_SECRET=dsoc_master_crypto_signing_secret_key_888!
+      # Connects seamlessly to your persistent cloud tracking collections database
+      - MONGO_URI=mongodb+srv://YOUR_USERNAME:YOUR_PASSWORD@cluster0.mongodb.net/dsoc-auth-db?retryWrites=true&w=majority
+    networks:
+      - dsoc-secure-mesh
+
+  # 🔒 SERVICE 2: The Completely Isolated Secure Cipher Payload Vault Room Node
+  vault-data-node:
+    build: ./vault-data-service
+    container_name: dsoc-vault-data-node
+    ports:
+      - "3050:3050"
+    environment:
+      - PORT=3050
+      - NODE_ENV=production
+      - JWT_SECRET=dsoc_master_crypto_signing_secret_key_888! # Must match Service 1 exactly to audit signatures
+      - MONGO_URI=mongodb+srv://YOUR_USERNAME:YOUR_PASSWORD@cluster0.mongodb.net/dsoc-vault-db?retryWrites=true&w=majority
+    networks:
+      - dsoc-secure-mesh
